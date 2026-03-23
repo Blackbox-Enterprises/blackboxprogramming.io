@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>BlackRoad OS</title>
+<meta name="description" content="BlackRoad OS — Remember the Road. Pave Tomorrow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta property="og:title" content="BlackRoad OS">
+<meta property="og:description" content="Remember the Road. Pave Tomorrow.">
+<meta property="og:url" content="https://blackroad.io">
+<meta property="og:image" content="https://images.blackroad.io/brand/blackroad-og.png">
+<link rel="canonical" href="https://blackroad.io">
+<link rel="icon" type="image/png" href="https://images.blackroad.io/brand/favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --g:linear-gradient(90deg,#FF6B2B,#FF2255,#CC00AA,#8844FF,#4488FF,#00D4FF);
+  --g135:linear-gradient(135deg,#FF6B2B,#FF2255,#CC00AA,#8844FF,#4488FF,#00D4FF);
+  --bg:#000;--border:#1a1a1a;--sub:#999;--dim:#333;
+  --sg:'Space Grotesk',sans-serif;--jb:'JetBrains Mono',monospace
+}
+body{background:var(--bg);color:#f5f5f5;font-family:var(--sg);overflow-x:hidden;padding-bottom:48px;-webkit-tap-highlight-color:transparent}
+.grad-bar{height:4px;background:var(--g)}
+.container{max-width:100%;margin:0 auto;padding:32px 16px 0}
+.section{margin-bottom:40px}
+.section-label{font-family:var(--jb);font-size:10px;font-weight:500;color:var(--sub);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.company-name{font-size:24px;font-weight:700;color:#fff;margin-bottom:4px}
+.company-sub{font-size:13px;color:#aaa;margin-bottom:32px;line-height:1.6}
+.mark{width:24px;height:3px;border-radius:2px;background:var(--g);margin-bottom:16px}
+.card{border:1px solid var(--border);border-radius:10px;padding:16px;background:#0a0a0a;transition:border-color .2s,transform .15s;margin-bottom:10px;cursor:pointer}
+.card:hover{border-color:var(--dim)}
+.card:active{transform:scale(.985)}
+.stat-val{font-size:22px;font-weight:700;color:#fff}
+.stat-label{font-family:var(--jb);font-size:9px;color:#aaa;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.grid-4{display:grid;gap:10px;margin-bottom:16px;grid-template-columns:repeat(2,1fr)}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px}
+.dot-live{background:var(--g135)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 2s infinite}
+.circle-accent{width:8px;height:8px;border-radius:50%;background:var(--g135);display:inline-block}
+
+/* ═══ WIDGET GRID ═══ */
+.widget-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.widget{border:1px solid var(--border);border-radius:12px;padding:16px;background:#0a0a0a;cursor:grab;transition:border-color .2s,transform .15s,box-shadow .2s;position:relative;min-height:90px;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
+.widget:hover{border-color:var(--dim)}
+.widget:active{cursor:grabbing;transform:scale(.97)}
+.widget.dragging{opacity:.5;border-color:#444;box-shadow:0 0 20px rgba(136,68,255,.15)}
+.widget.drag-over{border-color:#888;background:#111}
+.widget-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:10px;background:#111;border:1px solid var(--border)}
+.widget-icon.grad{background:var(--g135);border:none}
+.widget-name{font-size:12px;font-weight:600;color:#ddd;margin-bottom:2px}
+.widget-desc{font-family:var(--jb);font-size:9px;color:#888;line-height:1.4}
+.widget-link{position:absolute;inset:0;border-radius:12px;z-index:1}
+.widget-badge{position:absolute;top:8px;right:8px;font-family:var(--jb);font-size:8px;color:#666;background:#111;border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.widget-palette{display:none;border:1px solid var(--border);border-radius:12px;background:#0a0a0a;padding:16px;margin-bottom:16px}
+.widget-palette.open{display:block}
+.widget-palette-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.widget-palette-item{border:1px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;transition:border-color .2s;font-size:11px;color:#aaa}
+.widget-palette-item:hover{border-color:#555;color:#ddd}
+.widget-edit-mode .widget{animation:wiggle .3s ease-in-out infinite alternate}
+.widget-edit-mode .widget:nth-child(2n){animation-delay:.15s}
+@keyframes wiggle{0%{transform:rotate(-.5deg)}100%{transform:rotate(.5deg)}}
+.widget-remove{display:none;position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#333;border:1px solid #555;color:#aaa;font-size:11px;cursor:pointer;z-index:2;align-items:center;justify-content:center;line-height:1}
+.widget-edit-mode .widget-remove{display:flex}
+
+@media(min-width:600px){
+  .container{padding:40px 24px 0;max-width:880px}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  .widget-grid{grid-template-columns:repeat(3,1fr)}
+  .widget-palette-grid{grid-template-columns:repeat(3,1fr)}
+  .company-name{font-size:28px}
+}
+@media(min-width:900px){
+  .container{padding:48px 24px 0}
+  .widget-grid{grid-template-columns:repeat(4,1fr)}
+  .widget-palette-grid{grid-template-columns:repeat(4,1fr)}
+  .company-name{font-size:32px}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="grad-bar"></div>
+<div class="container">
+
+  <div class="section">
+    <div class="mark"></div>
+    <div class="company-name">BlackRoad OS</div>
+    <div class="company-sub">Remember the Road. Pave Tomorrow.</div>
+  </div>
+
+  <div class="section">
+    <div class="grid-4">
+      <div class="card"><div class="stat-val">20</div><div class="stat-label">Domains</div></div>
+      <div class="card"><div class="stat-val">7</div><div class="stat-label">Nodes</div></div>
+      <div class="card"><div class="stat-val">18</div><div class="stat-label">Orgs</div></div>
+      <div class="card"><div class="stat-val" id="s-repos">383</div><div class="stat-label">Repos</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="section-label" style="margin-bottom:0">Apps & Tools</div>
+      <button onclick="toggleEditMode()" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-family:var(--jb);font-size:9px;color:#888;cursor:pointer" id="edit-btn">Edit</button>
+    </div>
+    <div class="widget-palette" id="widget-palette">
+      <div style="font-size:12px;color:#aaa;margin-bottom:4px">Add a widget</div>
+      <div class="widget-palette-grid" id="palette-grid"></div>
+    </div>
+    <div class="widget-grid" id="widget-grid"></div>
+  </div>
+
+  <div class="section" style="text-align:center">
+    <span style="font-size:11px;color:#aaa"><span class="circle-accent pulse"></span>&nbsp; Running since: <span id="uptime">calculating...</span></span>
+  </div>
+
+</div>
+<div class="grad-bar" style="margin-top:24px"></div>
+
+<script>
+var WIDGET_CATALOG = [
+  {id:'chat',name:'Chat',desc:'RoundTrip messenger',icon:'💬',href:'https://chat.blackroad.io',badge:'Live'},
+  {id:'search',name:'Search',desc:'Search everything',icon:'🔍',href:'https://search.blackroad.io',badge:'Live'},
+  {id:'pay',name:'Pay',desc:'Stripe checkout',icon:'💳',href:'https://pay.blackroad.io',badge:'Live'},
+  {id:'status',name:'Status',desc:'Fleet health',icon:'📡',href:'https://status.blackroad.io',badge:'Live'},
+  {id:'docs',name:'Docs',desc:'Documentation hub',icon:'📄',href:'https://docs.blackroad.io'},
+  {id:'github',name:'GitHub',desc:'Source code',icon:'⚡',href:'https://github.com/BlackRoad-OS-Inc'},
+  {id:'roadcoin',name:'RoadCoin',desc:'Compute credits',icon:'🪙',href:'https://roadcoin.io'},
+  {id:'roadchain',name:'RoadChain',desc:'Block explorer',icon:'⛓',href:'https://roadchain.io'},
+  {id:'ai',name:'AI',desc:'AI playground',icon:'🧠',href:'https://blackroadai.com'},
+  {id:'network',name:'Network',desc:'Mesh status',icon:'🌐',href:'https://blackroad.network'},
+  {id:'systems',name:'Systems',desc:'Fleet dashboard',icon:'🖥',href:'https://blackroad.systems'},
+  {id:'identity',name:'Identity',desc:'Profile & auth',icon:'👤',href:'https://blackroad.me'},
+  {id:'company',name:'Company',desc:'Corporate info',icon:'🏛',href:'https://blackroad.company'},
+  {id:'tutor',name:'Tutor',desc:'Learn & earn',icon:'📚',href:'https://tutor.blackroad.io'},
+  {id:'canvas',name:'Canvas',desc:'Creative studio',icon:'🎨',href:'https://canvas.blackroad.io'},
+  {id:'video',name:'Video',desc:'RoadView player',icon:'▶',href:'https://video.blackroad.io'},
+  {id:'radio',name:'Radio',desc:'Live audio',icon:'📻',href:'https://radio.blackroad.io'},
+  {id:'game',name:'Game',desc:'RoadWorld',icon:'🎮',href:'https://game.blackroad.io'},
+  {id:'social',name:'Social',desc:'BackRoad feed',icon:'📱',href:'https://social.blackroad.io'},
+  {id:'brand',name:'Brand',desc:'Design system',icon:'◼',href:'https://brand.blackroad.io'},
+  {id:'quantum',name:'Quantum',desc:'QI research',icon:'⚛',href:'https://blackroadquantum.com'},
+  {id:'lucidia',name:'Lucidia',desc:'AI companion',icon:'✧',href:'https://lucidia.earth'},
+  {id:'math',name:'Math',desc:'Amundson Framework',icon:'∑',href:'https://github.com/BlackRoad-OS-Inc/amundson-constant'},
+  {id:'pricing',name:'Pricing',desc:'Plans & hardware',icon:'$',href:'https://pricing.blackroad.io'},
+  {id:'hq',name:'HQ',desc:'Pixel office',icon:'🏢',href:'https://hq.blackroad.io'},
+  {id:'portal',name:'Portal',desc:'Auth portal',icon:'🚪',href:'https://portal.blackroad.io'},
+  {id:'images',name:'Images',desc:'Asset CDN',icon:'🖼',href:'https://images.blackroad.io'},
+];
+
+var STORAGE_KEY = 'br-widgets-io';
+var DEFAULT_WIDGETS = ['chat','search','pay','status','github','company','roadcoin','roadchain','ai','network','systems','identity','docs','tutor','canvas','video','radio','game','social','brand','quantum','lucidia','math','pricing','hq','portal','images'];
+
+function getActiveWidgets(){try{var s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}return DEFAULT_WIDGETS.slice();}
+function saveActiveWidgets(ids){localStorage.setItem(STORAGE_KEY,JSON.stringify(ids));}
+
+var editMode=false;
+function toggleEditMode(){
+  editMode=!editMode;
+  document.getElementById('edit-btn').textContent=editMode?'Done':'Edit';
+  document.getElementById('widget-palette').classList.toggle('open',editMode);
+  document.getElementById('widget-grid').classList.toggle('widget-edit-mode',editMode);
+  renderWidgets();renderPalette();
+}
+
+function renderWidgets(){
+  var ids=getActiveWidgets();
+  document.getElementById('widget-grid').innerHTML=ids.map(function(id,i){
+    var w=WIDGET_CATALOG.find(function(x){return x.id===id});
+    if(!w)return '';
+    return '<div class="widget" draggable="true" data-id="'+w.id+'" data-index="'+i+'"'+
+      ' ondragstart="wDragStart(event)" ondragover="wDragOver(event)" ondrop="wDrop(event)" ondragend="wDragEnd(event)">'+
+      (editMode?'<div class="widget-remove" onclick="removeWidget(\''+w.id+'\')">×</div>':'')+
+      '<div class="widget-icon">'+w.icon+'</div>'+
+      '<div class="widget-name">'+w.name+'</div>'+
+      '<div class="widget-desc">'+w.desc+'</div>'+
+      (w.badge?'<div class="widget-badge">'+w.badge+'</div>':'')+
+      (!editMode?'<a href="'+w.href+'" target="_blank" class="widget-link"></a>':'')+
+      '</div>';
+  }).join('');
+}
+
+function renderPalette(){
+  var ids=getActiveWidgets();
+  var avail=WIDGET_CATALOG.filter(function(w){return ids.indexOf(w.id)===-1});
+  var pg=document.getElementById('palette-grid');
+  if(!avail.length){pg.innerHTML='<div style="font-size:11px;color:#555;padding:8px">All widgets added</div>';return;}
+  pg.innerHTML=avail.map(function(w){
+    return '<div class="widget-palette-item" onclick="addWidget(\''+w.id+'\')">'+w.icon+' '+w.name+'</div>';
+  }).join('');
+}
+
+function addWidget(id){var ids=getActiveWidgets();if(ids.indexOf(id)===-1){ids.push(id);saveActiveWidgets(ids);}renderWidgets();renderPalette();}
+function removeWidget(id){var ids=getActiveWidgets().filter(function(x){return x!==id});saveActiveWidgets(ids);renderWidgets();renderPalette();}
+
+var dragIdx=null;
+function wDragStart(e){dragIdx=+e.target.closest('.widget').dataset.index;e.target.closest('.widget').classList.add('dragging');}
+function wDragOver(e){e.preventDefault();e.target.closest('.widget')?.classList.add('drag-over');}
+function wDrop(e){
+  e.preventDefault();
+  document.querySelectorAll('.widget').forEach(function(x){x.classList.remove('drag-over')});
+  var target=e.target.closest('.widget');if(!target)return;
+  var toIdx=+target.dataset.index;if(dragIdx===null||dragIdx===toIdx)return;
+  var ids=getActiveWidgets();var moved=ids.splice(dragIdx,1)[0];ids.splice(toIdx,0,moved);
+  saveActiveWidgets(ids);renderWidgets();
+}
+function wDragEnd(e){dragIdx=null;document.querySelectorAll('.widget').forEach(function(x){x.classList.remove('dragging','drag-over')});}
+
+renderWidgets();
+
+// Uptime
+var founded=new Date('2025-11-17T00:00:00Z');
+function uptime(){var diff=Date.now()-founded;var d=Math.floor(diff/86400000);var h=Math.floor((diff%86400000)/3600000);var m=Math.floor((diff%3600000)/60000);document.getElementById('uptime').textContent=d+'d '+h+'h '+m+'m';}
+uptime();setInterval(uptime,60000);
+</script>
+</body>
+</html>
